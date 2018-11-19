@@ -1,6 +1,20 @@
 <?php
 
 /*
+ * Implements hook_menu()
+ */
+function cse_selector_menu() {
+  $items['admin/config/content/cse_selector'] = array(
+    'title' => 'Google Custom Search',
+    'description' => 'Google Custom Search',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cse_selector_settings'),
+    'file' => 'cse_selector.admin.inc',
+    'access arguments' => array('administer'),
+  );
+  return $items;
+}
+/*
  * Implements hook_help for Custom Search
  */
 function cse_selector_help() {
@@ -11,7 +25,16 @@ function cse_selector_help() {
       $output .= '<p>' . t('This module implements Google\'s Custom Search engine to search either under a particular page or the entire site') . '</p>';
       $output .= '<dt>' . t('Information') . '<dt>';
       $output .= '<dd>' . t('This module consists of a search bar in the header, and a search page with a second search bar and a radio selection to define the \'as_sitesearch\' parameter to the specific subpage, and the search results. The default behavior will be to search on the subpage') . '</dd>';
-      $output .= '<dt>' . t('Configuration') . '</dt>'
-      $output .= '<dd>' . t('The Google Search API Key can be configured at ')
+      $output .= '<dt>' . t('Configuration') . '</dt>';
+      $output .= '<dd>' . t('The Google Search API Key can be configured at admin/config/content/cse_selector_help') . '</dd>';
+      break;
   }
 }
+
+/*
+ * Implements hook_block_view
+
+function cse_selector_block_view() {
+
+  return $form
+}*/

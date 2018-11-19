@@ -6,11 +6,11 @@
  function cse_selector_settings() {
    $form['cse_selector'] = array(
      '#type' => 'fieldset',
-     '#title' => t('Configure Custom Search Engine'),
+     '#title' => t('Configure Google Custom Search Engine'),
    );
 
    $form['cse_selector']['cse_selector_api_key'] = array(
-     '#type' => 'password',
+     '#type' => 'textfield',
      '#title' => t('Google Custom Search API Key'),
      '#default_value' => variable_get('cse_selector_api_key', 'this_is_a_test'),
      '#description' => t('This is the API key for the Google Custom Search Engine.'),
