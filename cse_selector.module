@@ -47,33 +47,15 @@ function cse_selector_block_view() {
 }
 
 /*
- * Implements search results
+ * Implements Google CSE Selector Search Box
  */
- /*Function cse_selector_####($path) {
-  $search_addr = http:\/\/local.test/cse; //Replace this with actual url in production
-  $curr_addr = $address . explode('/', current_path())[0];
-  $block['results'] = '<gcse:results-only as_sitesearch=\"' . $curr_addr . '\"></gcse:results-only>';
-  return $block;
+function cse_selector_search_box() {
+
 }
 
-function cse_selector_display_form() {
-  $form['search']['q'] = array(
-    '#type' => 'textfield',
-    '#default_value' => '',
-  );
-  $options = array(
-
-  );
-  $form['search']['search_location'] = array(
-
-  );
-  $form['search']['search_submit']  = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-  );
-  return $form;
+/*
+ * Implements Google CSE Selector Results Page
+ */
+function cse_selector_results_page() {
+  
 }
-
-function cse_selector_###_validate($form) {
-
-}*/
