@@ -1,0 +1,17 @@
+<?php
+
+/*
+ * Implements hook_help for Custom Search
+ */
+function cse_selector_help() {
+  switch ($path) {
+    case 'admin/help#cse_selector':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module implements Google\'s Custom Search engine to search either under a particular page or the entire site') . '</p>';
+      $output .= '<dt>' . t('Information') . '<dt>';
+      $output .= '<dd>' . t('This module consists of a search bar in the header, and a search page with a second search bar and a radio selection to define the \'as_sitesearch\' parameter to the specific subpage, and the search results. The default behavior will be to search on the subpage') . '</dd>';
+      $output .= '<dt>' . t('Configuration') . '</dt>'
+      $output .= '<dd>' . t('The Google Search API Key can be configured at ')
+  }
+}

@@ -1,0 +1,5 @@
+name = Custom Search Engine
+description = Implementation of Google Custom Search
+core = 7.x
+package = Fields
+version = 7.x-1.0
