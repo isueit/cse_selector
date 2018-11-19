@@ -12,9 +12,10 @@
    $form['cse_selector']['cse_selector_api_key'] = array(
      '#type' => 'textfield',
      '#title' => t('Google Custom Search API Key'),
-     '#default_value' => variable_get('cse_selector_api_key', 'this_is_a_test'),
+     '#default_value' => variable_get('cse_selector_api_key', '014153082229948236703:4fobzs0gqdo'),
      '#description' => t('This is the API key for the Google Custom Search Engine.'),
    );
+   
    return system_settings_form($form);
  }
 

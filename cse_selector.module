@@ -17,7 +17,7 @@ function cse_selector_menu() {
 /*
  * Implements hook_help for Custom Search
  */
-function cse_selector_help() {
+function cse_selector_help($path, $arg) {
   switch ($path) {
     case 'admin/help#cse_selector':
       $output = '';
@@ -32,9 +32,48 @@ function cse_selector_help() {
 }
 
 /*
- * Implements hook_block_view
-
+ * Implements hook_block_view, this will be displayed on every page, default behavior sends current subpage for as_sitesearch
+ */
 function cse_selector_block_view() {
+  $block['search']['q'] = array(
+    '#type' => 'textfield',
+    '#default_value' => '',
+  );
+  $block['search']['search_submit']  = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
+  return $block;
+}
 
-  return $form
+/*
+ * Implements search results
+ */
+ /*Function cse_selector_####($path) {
+  $search_addr = http:\/\/local.test/cse; //Replace this with actual url in production
+  $curr_addr = $address . explode('/', current_path())[0];
+  $block['results'] = '<gcse:results-only as_sitesearch=\"' . $curr_addr . '\"></gcse:results-only>';
+  return $block;
+}
+
+function cse_selector_display_form() {
+  $form['search']['q'] = array(
+    '#type' => 'textfield',
+    '#default_value' => '',
+  );
+  $options = array(
+
+  );
+  $form['search']['search_location'] = array(
+
+  );
+  $form['search']['search_submit']  = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
+  return $form;
+}
+
+function cse_selector_###_validate($form) {
+
 }*/
