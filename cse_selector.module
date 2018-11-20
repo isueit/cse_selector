@@ -32,30 +32,65 @@ function cse_selector_help($path, $arg) {
 }
 
 /*
- * Implements hook_block_view, this will be displayed on every page, default behavior sends current subpage for as_sitesearch
+ * Implements Google CSE Selector Search Box
+ * Can be easily modified to remove radios under searchbar by passing parameter
  */
-function cse_selector_block_view() {
-  $block['search']['q'] = array(
+function cse_selector_search_form($form, &$state) {
+  $form['#method'] = 'get';
+  $form['search'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('')
+  );
+  $form['search']['q'] = array(
     '#type' => 'textfield',
     '#default_value' => '',
   );
-  $block['search']['search_submit']  = array(
+  $form['search']['search_submit']  = array(
     '#type' => 'submit',
     '#value' => t('Search'),
   );
-  return $block;
+  if (TRUE) {
+    $form['search']['radio'] = array(
+      '#type' => 'radios',
+      '#options' => array(
+        'narrow' => str_replace('<Site Name>',variable_get('site_name'), t(variable_get('cse_narrow_search_text'))),
+        'wide' => t(variable_get('cse_wide_search_text')),
+      ),
+      '#default_value' => variable_get('cse_default_search_type'),
+    );
+  }
+  return $form;
 }
-
-/*
- * Implements Google CSE Selector Search Box
- */
-function cse_selector_search_box() {
-
+function cse_selector_search_form_submit() {
+  echo '1';
 }
+//Implements hook_block_info for selector search and results
+function cse_selector_block_info() {
+  $blocks['search'] = array(
+    'info' => t('Google Custom Search Bar'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['results'] = array(
+    'info' => t('Google Custom Search Results'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
 
-/*
- * Implements Google CSE Selector Results Page
- */
-function cse_selector_results_page() {
-  
+  return $blocks;
+}
+// Implements hook_block_view for selector search and results
+function cse_selector_block_view($delta) {
+  switch ($delta) {
+    case 'search':
+    //Calls for search form
+      $block['content'] = drupal_get_form('cse_selector_search_form');
+      return $block;
+      break;
+    case 'results':
+    //Outputs search results
+      $block = '<gcse:searchresults-only as_sitesearch="' . variable_get('cse_narrow_search_query', 'https://www.extension.iastate.edu' . base_path());
+      $block .= '" queryParameterName="' . variable_get('cse_url_text');
+      $block .= '"></gcse:searchresults-only>';
+      return $block;
+      break;
+  }
 }
