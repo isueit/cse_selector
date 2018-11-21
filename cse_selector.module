@@ -60,10 +60,17 @@ function cse_selector_search_form($form, &$form_state) {
       '#default_value' => variable_get('cse_selector_default_search_type'),
     );
   }
-  $form['search'][variable_get('cse_selector_url_text')] = array(
-    '#type' => 'textfield',
-    '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
-  );
+  if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
+    $form['search'][variable_get('cse_selector_url_text')] = array(
+      '#type' => 'textfield',
+      '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
+    );
+  } else {
+    $form['search'][variable_get('cse_selector_url_text')] = array(
+      '#type' => 'textfield',
+      '#default_value' => '',
+    );
+  }
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
     '#value' => t('Search'),
@@ -84,32 +91,32 @@ function cse_selector_results_form($form, &$form_state) {
     ),
     '#default_value' => drupal_get_query_parameters()['search_broadness'],
   );
+  $form['search'][variable_get('cse_selector_url_text')] = array(
+    '#type' => 'hidden',
+    '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
+  );
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
     '#value' => t('Search'),
   );
-  /*$form['search'][variable_get('cse_selector_url_text')] = array(
-    '#type' => 'hidden',
-    '#value' => drupal_get_query_parameters(variable_get('cse_selector_url_text')),
-  );*/
-
-  $block['content'] = '';
-  $block['content'] .= '<h2>' . t('This Is a Test') . '</h2>';
-  $block['content'] .= '<gcse:searchresults-only as_sitesearch="' . variable_get('cse_narrow_search_query');
-  $block['content'] .= '" queryParameterName="' . variable_get('cse_url_text');
-  $block['content'] .= '"></gcse:searchresults-only>';
-  $block['content'] .= '<script>';
-  $block['content'] .= '(function() { var cx = \'' . variable_get('cse_selector_id_key') . '\';';
-  $block['content'] .= 'var gcse = document.createElement(\'script\');';
-  $block['content'] .= 'gcse.type = \'text/javascript\'; gcse.async = true;';
-  $block['content'] .= 'gcse.src = \'https://cse.google.com/cse.js?cx=\' + cx;';
-  $block['content'] .= 'var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(gcse, s);';
-  $block['content'] .= '})();';
-  $block['content'] .= '</script>';
-  $form['search']['results'] = array(
-    '#markup' => $block,
+  //Loads external JS file to connect with google api
+  $form['#attached']['js'][] = drupal_get_path('module', 'cse_selector') . '/cse_selector.js';
+  drupal_add_js(array(
+    'cse_selector' => array(
+      'cse_selector_js_id_key' => variable_get('cse_selector_id_key'))
+    ),
+    'setting'
   );
-  return $form;
+  $block['content'] = '';
+  $block['content'] .= '<h2>' . t('This Is a Test') . '</h2><br>';
+  $block['content'] .= '<gcse:searchresults-only';
+  if (drupal_get_query_parameters()['search_broadness'] == 'narrow') {
+    $block['content'] .= ' as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
+  }
+  $block['content'] .= ' queryParameterName="' . variable_get('cse_selector_url_text');
+  $block['content'] .= '"></gcse:searchresults-only>';
+  $form['search']['results'] = array('#markup' => $block);
+   return $form;
 }
 //Implements hook_block_info for selector search and results
 function cse_selector_block_info() {

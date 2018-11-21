@@ -57,15 +57,3 @@
    );
    return system_settings_form($form);
  }
-
-/*
- * Validate Form and keep old API key to prevent accidental deletions
- */
-function cse_selector_settings_validate($form, &$form_state) {
-  $saved_api_key = variable_get('cse_selector_api_key', '');
-  $new_api_key = $form_state['values']['cse_selector_api_key'];
-
-  if (empty($new_api_key)) {
-    $form_state['values']['cse_selector_api_key'] = $saved_api_key;
-  }
-}
