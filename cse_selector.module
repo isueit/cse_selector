@@ -35,34 +35,81 @@ function cse_selector_help($path, $arg) {
  * Implements Google CSE Selector Search Box
  * Can be easily modified to remove radios under searchbar by passing parameter
  */
-function cse_selector_search_form($form, &$state) {
+
+ //TODO add radios to results, remove from inital search
+ //TODO merge blocks branch to master
+function cse_selector_search_form($form, &$form_state) {
   $form['#method'] = 'get';
+  $form['q'] = array(
+    '#type' => 'hidden',
+    '#default_value' => variable_get('cse_selector_results_page_name'),
+  );
   $form['search'] = array(
     '#type' => 'fieldset',
     '#title' => t('')
   );
-  $form['search']['q'] = array(
+
+  if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
+    $form['search']['search_broadness'] = array(
+      '#type' => 'hidden',
+      '#default_value' => drupal_get_query_parameters()['search_broadness'],
+    );
+  } else {
+    $form['search']['search_broadness'] = array(
+      '#type' => 'hidden',
+      '#default_value' => variable_get('cse_selector_default_search_type'),
+    );
+  }
+  $form['search'][variable_get('cse_selector_url_text')] = array(
     '#type' => 'textfield',
-    '#default_value' => '',
+    '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
   );
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
     '#value' => t('Search'),
   );
-  if (TRUE) {
-    $form['search']['radio'] = array(
-      '#type' => 'radios',
-      '#options' => array(
-        'narrow' => str_replace('<Site Name>',variable_get('site_name'), t(variable_get('cse_narrow_search_text'))),
-        'wide' => t(variable_get('cse_wide_search_text')),
-      ),
-      '#default_value' => variable_get('cse_default_search_type'),
-    );
-  }
   return $form;
 }
 function cse_selector_search_form_submit() {
   echo '1';
+}
+
+function cse_selector_results_form($form, &$form_state) {
+  $form['#method'] = 'get';
+  $form['search']['search_broadness'] = array(
+    '#type' => 'radios',
+    '#options' => array(
+      'narrow' => t(variable_get('cse_selector_narrow_search_text')),
+      'wide' => t(variable_get('cse_selector_wide_search_text')),
+    ),
+    '#default_value' => drupal_get_query_parameters()['search_broadness'],
+  );
+  $form['search']['search_submit']  = array(
+    '#type' => 'submit',
+    '#value' => t('Search'),
+  );
+  /*$form['search'][variable_get('cse_selector_url_text')] = array(
+    '#type' => 'hidden',
+    '#value' => drupal_get_query_parameters(variable_get('cse_selector_url_text')),
+  );*/
+
+  $block['content'] = '';
+  $block['content'] .= '<h2>' . t('This Is a Test') . '</h2>';
+  $block['content'] .= '<gcse:searchresults-only as_sitesearch="' . variable_get('cse_narrow_search_query');
+  $block['content'] .= '" queryParameterName="' . variable_get('cse_url_text');
+  $block['content'] .= '"></gcse:searchresults-only>';
+  $block['content'] .= '<script>';
+  $block['content'] .= '(function() { var cx = \'' . variable_get('cse_selector_id_key') . '\';';
+  $block['content'] .= 'var gcse = document.createElement(\'script\');';
+  $block['content'] .= 'gcse.type = \'text/javascript\'; gcse.async = true;';
+  $block['content'] .= 'gcse.src = \'https://cse.google.com/cse.js?cx=\' + cx;';
+  $block['content'] .= 'var s = document.getElementsByTagName(\'script\')[0]; s.parentNode.insertBefore(gcse, s);';
+  $block['content'] .= '})();';
+  $block['content'] .= '</script>';
+  $form['search']['results'] = array(
+    '#markup' => $block,
+  );
+  return $form;
 }
 //Implements hook_block_info for selector search and results
 function cse_selector_block_info() {
@@ -87,9 +134,7 @@ function cse_selector_block_view($delta) {
       break;
     case 'results':
     //Outputs search results
-      $block = '<gcse:searchresults-only as_sitesearch="' . variable_get('cse_narrow_search_query', 'https://www.extension.iastate.edu' . base_path());
-      $block .= '" queryParameterName="' . variable_get('cse_url_text');
-      $block .= '"></gcse:searchresults-only>';
+      $block['content'] = drupal_get_form('cse_selector_results_form');
       return $block;
       break;
   }
