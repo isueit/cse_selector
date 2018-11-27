@@ -107,15 +107,21 @@ function cse_selector_results_form($form, &$form_state) {
     ),
     'setting'
   );
-  $block['content'] = '';
-  $block['content'] .= '<h2>' . t('This Is a Test') . '</h2><br>';
-  $block['content'] .= '<gcse:searchresults-only';
-  if (drupal_get_query_parameters()['search_broadness'] == 'narrow') {
-    $block['content'] .= ' as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
-  }
-  $block['content'] .= ' queryParameterName="' . variable_get('cse_selector_url_text');
-  $block['content'] .= '"></gcse:searchresults-only>';
-  $form['search']['results'] = array('#markup' => $block);
+  //TODO convert this output to container
+  $block = '';
+  $block .= '<h2>' . t('This Is a Test') . '</h2><br>';
+  $block .= '<script class="cse_script">
+    var cx="' . variable_get('cse_selector_id_key') . '";
+  document.onload = cse_selector_js_request(); </script>';
+  $block .= '<div class="gcse-searchresults-only" data-quertyParameterName="'. variable_get('cse_selector_url_text') .'"></div>'
+  //$block .= '<gcse:searchresults-only"';
+  //if (drupal_get_query_parameters()['search_broadness'] == 'narrow') {
+    //$block .= ' as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
+  //}
+  //$block .= ' resultsUrl="https://www.extension.iastate.edu' . base_path() . variable_get('cse_selector_results_page_name') . '"' ;
+  //$block .= ' queryParameterName="' . variable_get('cse_selector_url_text');
+  //$block .= '"></gcse:searchresults-only>';
+  $form['search']['google_results'] = array('#markup' => $block);
    return $form;
 }
 //Implements hook_block_info for selector search and results
