@@ -36,8 +36,6 @@ function cse_selector_help($path, $arg) {
  * Can be easily modified to remove radios under searchbar by passing parameter
  */
 
- //TODO add radios to results, remove from inital search
- //TODO merge blocks branch to master
 function cse_selector_search_form($form, &$form_state) {
   $form['#method'] = 'get';
   $form['q'] = array(
@@ -109,18 +107,16 @@ function cse_selector_results_form($form, &$form_state) {
   );
   //TODO convert this output to container
   $block = '';
-  $block .= '<h2>' . t('This Is a Test') . '</h2><br>';
   $block .= '<script class="cse_script">
     var cx="' . variable_get('cse_selector_id_key') . '";
   document.onload = cse_selector_js_request(); </script>';
-  $block .= '<div class="gcse-searchresults-only" data-quertyParameterName="'. variable_get('cse_selector_url_text') .'"></div>'
-  //$block .= '<gcse:searchresults-only"';
-  //if (drupal_get_query_parameters()['search_broadness'] == 'narrow') {
-    //$block .= ' as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
-  //}
-  //$block .= ' resultsUrl="https://www.extension.iastate.edu' . base_path() . variable_get('cse_selector_results_page_name') . '"' ;
-  //$block .= ' queryParameterName="' . variable_get('cse_selector_url_text');
-  //$block .= '"></gcse:searchresults-only>';
+  $block .= '<div class="gcse-searchresults-only"';
+  if (drupal_get_query_parameters()['search_broadness'] == 'narrow') {
+    $block .= ' data-as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
+  }
+  $block .= ' data-resultsUrl="https://www.extension.iastate.edu' . base_path() . variable_get('cse_selector_results_page_name') . '"' ;
+  $block .= ' data-queryParameterName="' . variable_get('cse_selector_url_text') . '"';
+  $block .= '></div>';
   $form['search']['google_results'] = array('#markup' => $block);
    return $form;
 }
