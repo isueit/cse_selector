@@ -32,8 +32,7 @@ function cse_selector_help($path, $arg) {
 }
 
 /*
- * Implements Google CSE Selector Search Box
- * Can be easily modified to remove radios under searchbar by passing parameter
+ * Implements hook_form for Google CSE Selector Search Box
  */
 
 function cse_selector_search_form($form, &$form_state) {
@@ -46,7 +45,14 @@ function cse_selector_search_form($form, &$form_state) {
     '#type' => 'fieldset',
     '#title' => t('')
   );
-
+  $form['search'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'container-inline'
+      )
+    )
+  );
   if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
     $form['search']['search_broadness'] = array(
       '#type' => 'hidden',
@@ -71,7 +77,6 @@ function cse_selector_search_form($form, &$form_state) {
   }
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
-    '#value' => t('Search'),
   );
   return $form;
 }
@@ -79,6 +84,10 @@ function cse_selector_search_form_submit() {
   echo '1';
 }
 
+/*
+ * Implementation of hook_form
+  * This contains width of search radios and the results box
+ */
 function cse_selector_results_form($form, &$form_state) {
   $form['#method'] = 'get';
   $form['search']['search_broadness'] = array(
@@ -88,6 +97,7 @@ function cse_selector_results_form($form, &$form_state) {
       'wide' => t(variable_get('cse_selector_wide_search_text')),
     ),
     '#default_value' => drupal_get_query_parameters()['search_broadness'],
+    '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
   );
   $form['search'][variable_get('cse_selector_url_text')] = array(
     '#type' => 'hidden',
@@ -105,7 +115,7 @@ function cse_selector_results_form($form, &$form_state) {
     ),
     'setting'
   );
-  //TODO convert this output to container
+
   $block = '';
   $block .= '<script class="cse_script">
     var cx="' . variable_get('cse_selector_id_key') . '";
