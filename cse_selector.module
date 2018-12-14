@@ -53,35 +53,28 @@ function cse_selector_search_form($form, &$form_state) {
       )
     )
   );
+  $form['search']['search_broadness'] = array(
+    '#type' => 'hidden',
+  );
   if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
-    $form['search']['search_broadness'] = array(
-      '#type' => 'hidden',
-      '#default_value' => drupal_get_query_parameters()['search_broadness'],
-    );
+    $form['search']['search_broadness']['#default_value'] = drupal_get_query_parameters()['search_broadness'];
+
   } else {
-    $form['search']['search_broadness'] = array(
-      '#type' => 'hidden',
-      '#default_value' => variable_get('cse_selector_default_search_type'),
-    );
+    $form['search']['search_broadness']['#default_value'] = variable_get('cse_selector_default_search_type');
   }
+  $form['search'][variable_get('cse_selector_url_text')] = array(
+    '#type' => 'textfield',
+    '#attributes' => array('placeholder' => t('Search')),
+  );
   if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
-    $form['search'][variable_get('cse_selector_url_text')] = array(
-      '#type' => 'textfield',
-      '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
-    );
+        $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = drupal_get_query_parameters()[variable_get('cse_selector_url_text')];
   } else {
-    $form['search'][variable_get('cse_selector_url_text')] = array(
-      '#type' => 'textfield',
-      '#default_value' => '',
-    );
+    $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = '';
   }
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
   );
   return $form;
-}
-function cse_selector_search_form_submit() {
-  echo '1';
 }
 
 /*
@@ -94,15 +87,21 @@ function cse_selector_results_form($form, &$form_state) {
     '#type' => 'radios',
     '#options' => array(
       'narrow' => t(variable_get('cse_selector_narrow_search_text')),
-      'wide' => t(variable_get('cse_selector_wide_search_text')),
+      'wide' => t(variable_get('cse_selector_wide_search_text'))
     ),
-    '#default_value' => drupal_get_query_parameters()['search_broadness'],
     '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
   );
-  $form['search'][variable_get('cse_selector_url_text')] = array(
-    '#type' => 'hidden',
-    '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
-  );
+  if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
+    $form['search']['search_broadness']['#default_value'] = drupal_get_query_parameters()['search_broadness'];
+  } else {
+    $form['search']['search_broadness']['#default_value'] = variable_get('cse_selector_default_search_type');
+  }
+  if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
+    $form['search'][variable_get('cse_selector_url_text')] = array(
+      '#type' => 'hidden',
+      '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
+    );
+  }
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
     '#value' => t('Search'),
@@ -121,7 +120,7 @@ function cse_selector_results_form($form, &$form_state) {
     var cx="' . variable_get('cse_selector_id_key') . '";
   document.onload = cse_selector_js_request(); </script>';
   $block .= '<div class="gcse-searchresults-only"';
-  if (drupal_get_query_parameters()['search_broadness'] == 'narrow') {
+  if (array_key_exists('search_broadness', drupal_get_query_parameters()) && drupal_get_query_parameters()['search_broadness'] == 'narrow') {
     $block .= ' data-as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
   }
   $block .= ' data-resultsUrl="https://www.extension.iastate.edu' . base_path() . variable_get('cse_selector_results_page_name') . '"' ;
