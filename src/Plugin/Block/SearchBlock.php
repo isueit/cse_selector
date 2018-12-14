@@ -21,7 +21,7 @@ class SearchBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\CSESearchForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\SearchForm');
     return $form;
   }
 }

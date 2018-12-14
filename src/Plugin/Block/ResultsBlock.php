@@ -21,7 +21,7 @@ class ResultsBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\CSEResultsForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\ResultsForm');
     return $form;
   }
 }

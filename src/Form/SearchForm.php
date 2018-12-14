@@ -4,8 +4,8 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 
-class CSESearchForm extends FormInterface {
-  public function searchForm() {
+class SearchForm extends FormInterface {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
     $cse_search_type = $config->get('cse_selector_default_search_type');
     $cse_url_text = $config->get('cse_selector_url_text');

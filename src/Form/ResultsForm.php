@@ -3,8 +3,8 @@ namespace Drupal\cse_selector\Form;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 
-class CSEResultsForm extends FormInterface {
-  public function buildForm() {
+class ResultsForm extends FormInterface {
+  public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
     $cse_id_key = $config->get('cse_selector_id_key');
     $cse_narrow_search_text = $config->get('cse_selector_narrow_search_text');
@@ -39,7 +39,7 @@ class CSEResultsForm extends FormInterface {
       '#value' => t('Search'),
     );
     //Loads external JS file to connect with google api
-    $form['#attached']['js'][] = drupal_get_path('module', 'cse_selector') . '/cse_selector.js';
+    $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
 
     $block = '';
     $block .= '<script class="cse_script">
