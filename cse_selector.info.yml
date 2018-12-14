@@ -6,5 +6,4 @@ version: '8.x-1.0-dev'
 package: 'ISUEO'
 dependencies:
   - drupal:block
-project: 'cse_selector'
-configure: cse_selector.cse_admin_settings_form
+configure: cse_selector.admin_settings_form
