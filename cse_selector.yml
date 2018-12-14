@@ -1,0 +1,9 @@
+name: 'CSE Selector'
+type: module
+description: 'Implementation of Google Custom Search with adjustable search scope'
+core: '8.x'
+package: 'ISUEO'
+dependencies:
+  - drupal:block
+project: '08cse_selector'
+configure: cse_selector.cse_admin_settings_form

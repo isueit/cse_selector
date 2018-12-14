@@ -1,159 +1,22 @@
 <?php
 
-/*
- * Implements hook_menu()
+/**
+ * @file
+ * Contains cse_selector.module
  */
-function cse_selector_menu() {
-  $items['admin/config/content/cse_selector'] = array(
-    'title' => 'Google Custom Search',
-    'description' => 'Google Custom Search',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('cse_selector_settings'),
-    'file' => 'cse_selector.admin.inc',
-    'access arguments' => array('administer'),
-  );
-  return $items;
-}
-/*
- * Implements hook_help for Custom Search
+ use Drupal\Core\Routing\RouteMatchInterface;
+
+ /**
+ * Implements hook_help()
  */
-function cse_selector_help($path, $arg) {
-  switch ($path) {
-    case 'admin/help#cse_selector':
-      $output = '';
-      $output .= '<h3>' . t('About') . '</h3>';
-      $output .= '<p>' . t('This module implements Google\'s Custom Search engine to search either under a particular page or the entire site') . '</p>';
-      $output .= '<dt>' . t('Information') . '<dt>';
-      $output .= '<dd>' . t('This module consists of a search bar in the header, and a search page with a second search bar and a radio selection to define the \'as_sitesearch\' parameter to the specific subpage, and the search results. The default behavior will be to search on the subpage') . '</dd>';
-      $output .= '<dt>' . t('Configuration') . '</dt>';
-      $output .= '<dd>' . t('The Google Search API Key can be configured at admin/config/content/cse_selector_help') . '</dd>';
-      break;
-  }
-}
-
-/*
- * Implements hook_form for Google CSE Selector Search Box
- */
-
-function cse_selector_search_form($form, &$form_state) {
-  $form['#method'] = 'get';
-  $form['q'] = array(
-    '#type' => 'hidden',
-    '#default_value' => variable_get('cse_selector_results_page_name'),
-  );
-  $form['search'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('')
-  );
-  $form['search'] = array(
-    '#type' => 'container',
-    '#attributes' => array(
-      'class' => array(
-        'container-inline'
-      )
-    )
-  );
-  $form['search']['search_broadness'] = array(
-    '#type' => 'hidden',
-  );
-  if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
-    $form['search']['search_broadness']['#default_value'] = drupal_get_query_parameters()['search_broadness'];
-
-  } else {
-    $form['search']['search_broadness']['#default_value'] = variable_get('cse_selector_default_search_type');
-  }
-  $form['search'][variable_get('cse_selector_url_text')] = array(
-    '#type' => 'textfield',
-    '#attributes' => array('placeholder' => t('Search')),
-  );
-  if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
-        $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = drupal_get_query_parameters()[variable_get('cse_selector_url_text')];
-  } else {
-    $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = '';
-  }
-  $form['search']['search_submit']  = array(
-    '#type' => 'submit',
-  );
-  return $form;
-}
-
-/*
- * Implementation of hook_form
-  * This contains width of search radios and the results box
- */
-function cse_selector_results_form($form, &$form_state) {
-  $form['#method'] = 'get';
-  $form['search']['search_broadness'] = array(
-    '#type' => 'radios',
-    '#options' => array(
-      'narrow' => t(variable_get('cse_selector_narrow_search_text')),
-      'wide' => t(variable_get('cse_selector_wide_search_text'))
-    ),
-    '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
-  );
-  if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
-    $form['search']['search_broadness']['#default_value'] = drupal_get_query_parameters()['search_broadness'];
-  } else {
-    $form['search']['search_broadness']['#default_value'] = variable_get('cse_selector_default_search_type');
-  }
-  if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
-    $form['search'][variable_get('cse_selector_url_text')] = array(
-      '#type' => 'hidden',
-      '#default_value' => drupal_get_query_parameters()[variable_get('cse_selector_url_text')],
-    );
-  }
-  $form['search']['search_submit']  = array(
-    '#type' => 'submit',
-    '#value' => t('Search'),
-  );
-  //Loads external JS file to connect with google api
-  $form['#attached']['js'][] = drupal_get_path('module', 'cse_selector') . '/cse_selector.js';
-  drupal_add_js(array(
-    'cse_selector' => array(
-      'cse_selector_js_id_key' => variable_get('cse_selector_id_key'))
-    ),
-    'setting'
-  );
-
-  $block = '';
-  $block .= '<script class="cse_script">
-    var cx="' . variable_get('cse_selector_id_key') . '";
-  document.onload = cse_selector_js_request(); </script>';
-  $block .= '<div class="gcse-searchresults-only"';
-  if (array_key_exists('search_broadness', drupal_get_query_parameters()) && drupal_get_query_parameters()['search_broadness'] == 'narrow') {
-    $block .= ' data-as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
-  }
-  $block .= ' data-resultsUrl="https://www.extension.iastate.edu' . base_path() . variable_get('cse_selector_results_page_name') . '"' ;
-  $block .= ' data-queryParameterName="' . variable_get('cse_selector_url_text') . '"';
-  $block .= '></div>';
-  $form['search']['google_results'] = array('#markup' => $block);
-   return $form;
-}
-//Implements hook_block_info for selector search and results
-function cse_selector_block_info() {
-  $blocks['search'] = array(
-    'info' => t('Google Custom Search Bar'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  $blocks['results'] = array(
-    'info' => t('Google Custom Search Results'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-
-  return $blocks;
-}
-// Implements hook_block_view for selector search and results
-function cse_selector_block_view($delta) {
-  switch ($delta) {
-    case 'search':
-    //Calls for search form
-      $block['content'] = drupal_get_form('cse_selector_search_form');
-      return $block;
-      break;
-    case 'results':
-    //Outputs search results
-      $block['content'] = drupal_get_form('cse_selector_results_form');
-      return $block;
-      break;
-  }
-}
+ function cse_selector_help($route_name, RouteMatchInterface $route_match) {
+   switch ($route_name) {
+     //Main module help for the cse_selector module
+     case 'help.page.cse_selector':
+       $output = '';
+       $output .= '<h3>' . t('About') . '</h3>';
+       $output .= '<p>' . t('Drupal 8 Implementation of Google CSE with search scope options') . '</p>';
+       return $output;
+     default:
+   }
+ }
