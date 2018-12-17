@@ -1,9 +1,12 @@
 <?php
 namespace Drupal\cse_selector\Form;
-use Drupal\Core\Form\FormInterface;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
-class ResultsForm extends FormInterface {
+class ResultsForm extends FormBase {
+  public function getFormId() {
+    return 'search_results';
+  }
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
     $cse_id_key = $config->get('cse_selector_id_key');
@@ -13,6 +16,7 @@ class ResultsForm extends FormInterface {
     $cse_search_type = $config->get('cse_selector_default_search_type');
     $cse_url_text = $config->get('cse_selector_url_text');
     $cse_results_page_name = $config->get('cse_selector_results_page_name');
+    $get_results = \Drupal::request()->request->all();
 
     $form['#method'] = 'get';
     $form['search']['search_broadness'] = array(
@@ -23,15 +27,15 @@ class ResultsForm extends FormInterface {
       ),
       '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
     );
-    if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
-      $form['search']['search_broadness']['#default_value'] = drupal_get_query_parameters()['search_broadness'];
+    if (array_key_exists('search_broadness', $get_results)) {
+      $form['search']['search_broadness']['#default_value'] = $get_results['search_broadness'];
     } else {
       $form['search']['search_broadness']['#default_value'] = $cse_search_type;
     }
-    if (array_key_exists($cse_url_text, drupal_get_query_parameters())) {
+    if (array_key_exists($cse_url_text, $get_results)) {
       $form['search'][$cse_url_text] = array(
         '#type' => 'hidden',
-        '#default_value' => drupal_get_query_parameters()[$cse_url_text],
+        '#default_value' => $get_results[$cse_url_text],
       );
     }
     $form['search']['search_submit']  = array(
@@ -40,20 +44,20 @@ class ResultsForm extends FormInterface {
     );
     //Loads external JS file to connect with google api
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
-
     $block = '';
-    $block .= '<script class="cse_script">
-      var cx="' . $cse_id_key . '";
-    document.onload = cse_selector_js_request(); </script>';
+    $block .= '<p>test</p><script class="cse_script">var cx="' . $cse_id_key . '";document.onload = cse_selector_js_request(); </script>';
     $block .= '<div class="gcse-searchresults-only"';
-    if (array_key_exists('search_broadness', drupal_get_query_parameters()) && drupal_get_query_parameters()['search_broadness'] == 'narrow') {
+    if (array_key_exists('search_broadness', $get_results) && $get_results['search_broadness'] == 'narrow') {
       $block .= ' data-as_sitesearch="' . $cse_narrow_search_query . '"';
     }
     $block .= ' data-resultsUrl="https://www.extension.iastate.edu' . base_path() . $cse_results_page_name . '"' ;
     $block .= ' data-queryParameterName="' . $cse_url_text . '"';
     $block .= '></div>';
-    $form['search']['google_results'] = array('#markup' => $block);
-     return $form;
+    $form['search']['#markup'] = array(
+      '#value' => $block,
+      '#allowedtags' => ['div', 'script', 'p'],);
+    return $form;
   }
-
+  public function submitForm(array &$form, FormStateInterface $form_state){}
+  public function validateForm(array &$form, FormStateInterface $form_state){}
 }

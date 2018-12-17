@@ -1,7 +1,7 @@
 <?php
 
 namespace Drupal\cse_selector\Controller;
-use Drupal\core\Controller\ControllerBase;
+use Drupal\Core\Controller\ControllerBase;
 
 /*
  * Provides a search results response for module route to search-results
@@ -13,7 +13,7 @@ class ResultsController extends ControllerBase {
    *  Returns form for results
    */
   public function resultsPage() {
-    $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\SearchForm');
+    $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\ResultsForm');
     return $form;
   }
 }
