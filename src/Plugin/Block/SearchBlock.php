@@ -3,16 +3,15 @@
 namespace Drupal\cse_selector\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Form\FormInterface;
 
 /*
  * Provides a "Search Block" plugin
  *
- * @block (
+ * @Block(
  *   id = 'search_block',
  *   admin_label = @Translation("Search Bar Block"),
- *   category = @Translation("Search")
+ *   category = @Translation("Search"),
  * )
  */
 

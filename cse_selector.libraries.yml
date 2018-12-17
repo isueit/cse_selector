@@ -1,3 +1,4 @@
-cse_selector_results:
+cse_selector.cse_selector_results:
   version: 1.x
-  js: js/cse_selector.js: {}
+  js:
+    js/cse_selector.js: {}

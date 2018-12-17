@@ -45,7 +45,7 @@ class ResultsForm extends FormBase {
     //Loads external JS file to connect with google api
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
     $block = '';
-    $block .= '<p>test</p><script class="cse_script">var cx="' . $cse_id_key . '";document.onload = cse_selector_js_request(); </script>';
+    $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";document.onload = cse_selector_js_request(); </script>';
     $block .= '<div class="gcse-searchresults-only"';
     if (array_key_exists('search_broadness', $get_results) && $get_results['search_broadness'] == 'narrow') {
       $block .= ' data-as_sitesearch="' . $cse_narrow_search_query . '"';
@@ -53,9 +53,11 @@ class ResultsForm extends FormBase {
     $block .= ' data-resultsUrl="https://www.extension.iastate.edu' . base_path() . $cse_results_page_name . '"' ;
     $block .= ' data-queryParameterName="' . $cse_url_text . '"';
     $block .= '></div>';
-    $form['search']['#markup'] = array(
-      '#value' => $block,
-      '#allowedtags' => ['div', 'script', 'p'],);
+    $form['search']['results'] = array(
+      '#type' => 'item',
+      '#markup' => $block,
+      '#allowed_tags' => ['script'],
+    );
     return $form;
   }
   public function submitForm(array &$form, FormStateInterface $form_state){}

@@ -1,20 +1,17 @@
 <?php
+/*
+ * @file
+ * Contains \Drupal\cse_selector\Form\SearchForm
+ */
 namespace Drupal\cse_selector\Form;
 use Drupal\Core\Form\FormBase;
-<<<<<<< HEAD
-=======
-use Drupal\Core\Form\FormInterface;
->>>>>>> b1a5d2226302c71aba16bc83b72af446a4866593
 use Drupal\Core\Form\FormStateInterface;
 
 
 class SearchForm extends FormBase {
-<<<<<<< HEAD
   public function getFormId() {
     return 'search_bar';
   }
-=======
->>>>>>> b1a5d2226302c71aba16bc83b72af446a4866593
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
     $cse_search_type = $config->get('cse_selector_default_search_type');
