@@ -1,6 +1,6 @@
 <?php
 namespace Drupal\cse_selector\Form;
-use Drupal\Core\Form\FormInterface;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 class ResultsForm extends FormInterface {

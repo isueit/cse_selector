@@ -9,7 +9,7 @@ cse_selector.cse_admin_settings_form:
   options:
     _admin_route: TRUE
 cse_selector.cse_selector_search_results:
-  path: '/search-results'
+  path: '/search_results'
   defaults:
     _controller: '\Drupal\cse_selector\Controller\ResultsController::resultsPage'
     _title: 'Search Results'

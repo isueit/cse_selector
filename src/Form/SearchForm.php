@@ -1,10 +1,11 @@
 <?php
 namespace Drupal\cse_selector\Form;
+use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 
-class SearchForm extends FormInterface {
+class SearchForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
     $cse_search_type = $config->get('cse_selector_default_search_type');
