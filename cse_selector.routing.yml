@@ -15,3 +15,5 @@ cse_selector.cse_selector_search_results:
     _title: 'Search Results'
   requirements:
     _permission: 'access content'
+  options:
+    no_cache: TRUE

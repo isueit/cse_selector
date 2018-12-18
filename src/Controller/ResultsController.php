@@ -13,6 +13,7 @@ class ResultsController extends ControllerBase {
    *  Returns form for results
    */
   public function resultsPage() {
+    \Drupal::service('page_cache_kill_switch')->trigger();
     $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\ResultsForm');
     return $form;
   }
