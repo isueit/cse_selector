@@ -17,7 +17,7 @@ class SearchForm extends FormBase {
     $cse_search_type = $config->get('cse_selector_default_search_type');
     $cse_url_text = $config->get('cse_selector_url_text');
     $cse_results_page_name = $config->get('cse_selector_results_page_name');
-    $get_results = \Drupal::request()->request->all();
+    $get_results = \Drupal::request()->query->all();
 
     $form['#method'] = 'get';
     $form['q'] = array(

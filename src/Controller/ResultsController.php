@@ -15,6 +15,9 @@ class ResultsController extends ControllerBase {
   public function resultsPage() {
     \Drupal::service('page_cache_kill_switch')->trigger();
     $form = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\ResultsForm');
+    $form['form_id']['#access'] = FALSE;
+    $form['form_build_id']['#access'] = FALSE;
+    $form['form_token']['#access'] = FALSE;
     return $form;
   }
 }

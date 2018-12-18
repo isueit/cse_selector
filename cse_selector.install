@@ -1,0 +1,31 @@
+<?php
+/*
+ * Implements hook_install to set default variables
+ */
+function cse_selector_install() {
+  $config = \Drupal::config('cse_selector.settings');
+  $editable_configs = \Drupal::configFactory()->getEditable('cse_selector.settings');
+  $cse_narrow_search_text = $config->get('cse_selector_narrow_search_text');
+  $cse_narrow_search_query = $config->get('cse_selector_narrow_search_query');
+
+  // Looks for string and if it exists, replaces it with the actual variable- Still not changing variables
+  //TODO Fix this, might need to look at order this is fired and the settings.yml file is used
+  if (!(strpos($cse_narrow_search_text, '%site-name%') === false)) {
+    str_replace('%site-name%',Drupal::config('system.site')->get('name'),$cse_narrow_search_text);
+    $editable_configs->set('cse_selector_narrow_search_text', $cse_narrow_search_text);
+  }
+  if (!(strpos($cse_selector_narrow_search_query, '%base-path%') === false)) {
+    str_replace('%site-name%',base_path(),$cse_selector_narrow_search_query);
+    $editable_configs->set('cse_selector_narrow_search_query', $cse_selector_narrow_search_query);
+  }
+  $editable_configs->save();
+}
+
+/*
+ * Not sure if this is the proper way to remove, do not uncomment for the moment
+ *
+function cse_selector_uninstall() {
+  $config = \Drupal::config('cse_selector.settings');
+  $config->delete();
+}
+*/
