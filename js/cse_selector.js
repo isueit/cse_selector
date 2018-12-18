@@ -1,4 +1,5 @@
 //Basic JS to use google custom search
+document.onload = cse_selector_js_request();
 function cse_selector_js_request() {
   var gcse = document.createElement('script');
   gcse.type = 'text/javascript';

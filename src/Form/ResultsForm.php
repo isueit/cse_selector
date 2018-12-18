@@ -16,7 +16,7 @@ class ResultsForm extends FormBase {
     $cse_search_type = $config->get('cse_selector_default_search_type');
     $cse_url_text = $config->get('cse_selector_url_text');
     $cse_results_page_name = $config->get('cse_selector_results_page_name');
-    $get_results = \Drupal::request()->request->all();
+    $get_results = \Drupal::request()->query->all();
 
     $form['#method'] = 'get';
     $form['search']['search_broadness'] = array(
@@ -26,12 +26,8 @@ class ResultsForm extends FormBase {
         'wide' => t($cse_wide_search_text),
       ),
       '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
+      '#default_value' => (array_key_exists('search_broadness', $get_results) ? $get_results['search_broadness'] : $cse_search_type),
     );
-    if (array_key_exists('search_broadness', $get_results)) {
-      $form['search']['search_broadness']['#default_value'] = $get_results['search_broadness'];
-    } else {
-      $form['search']['search_broadness']['#default_value'] = $cse_search_type;
-    }
     if (array_key_exists($cse_url_text, $get_results)) {
       $form['search'][$cse_url_text] = array(
         '#type' => 'hidden',
@@ -45,7 +41,7 @@ class ResultsForm extends FormBase {
     //Loads external JS file to connect with google api
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
     $block = '';
-    $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";document.onload = cse_selector_js_request(); </script>';
+    $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";</script>';
     $block .= '<div class="gcse-searchresults-only"';
     if (array_key_exists('search_broadness', $get_results) && $get_results['search_broadness'] == 'narrow') {
       $block .= ' data-as_sitesearch="' . $cse_narrow_search_query . '"';
@@ -56,7 +52,7 @@ class ResultsForm extends FormBase {
     $form['search']['results'] = array(
       '#type' => 'item',
       '#markup' => $block,
-      '#allowed_tags' => ['script'],
+      '#allowed_tags' => ['script', 'div'],
     );
     return $form;
   }
