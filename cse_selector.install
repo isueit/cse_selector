@@ -15,7 +15,7 @@ function cse_selector_install() {
  * Not sure if this is the proper way to remove, do not uncomment for the moment
  *
 function cse_selector_uninstall() {
-  $config = \Drupal::config('cse_selector.settings');
-  $config->delete();
+  \Drupal::configFactory()->getEditable('cse_selector.settings')
+    ->delete();
 }
 */

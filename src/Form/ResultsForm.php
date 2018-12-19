@@ -42,18 +42,10 @@ class ResultsForm extends FormBase {
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
     $block = '';
     $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";</script>';
-    $block .= '<div class="gcse-searchresults-only"';
-    $block .= ' data-resultsUrl="https://www.extension.iastate.edu' . base_path() . $cse_results_page_name . '"' ;
-    $block .= ' data-queryParameterName="' . $cse_url_text . '" ';
-    #TODO get the as_sitesearch to allow the underscore and stop removing
-    if (array_key_exists('search_broadness', $get_results) && $get_results['search_broadness'] == 'narrow') {
-      $block .= 'data-as_sitesearch="' . $cse_narrow_search_query . '"';
-    }
-    $block .= '></div>';
     $form['search']['results'] = array(
       '#type' => 'item',
       '#markup' => $block,
-      '#allowed_tags' => ['script', 'div'],
+      '#allowed_tags' => ['script'],
     );
     return $form;
   }
