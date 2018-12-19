@@ -42,11 +42,25 @@ class ResultsForm extends FormBase {
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
     $block = '';
     $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";</script>';
-    $form['search']['results'] = array(
+    $form['search']['script'] = array(
       '#type' => 'item',
       '#markup' => $block,
       '#allowed_tags' => ['script'],
     );
+    $searchbroadness = preg_replace("/[^a-z]+/","",\Drupal::request()->query->get('search_broadness'));
+    $form['search']['results'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => ['gcse-searchresults-only'],
+        'data-resultsUrl' => ["https://www.extension.iastate.edu" . base_path()],
+        'data-queryParameterName' => [\Drupal::config('cse_selector.settings')->get('cse_selector_url_text')],
+      ],
+      '#value' => '',
+    ];
+    if (array_key_exists('search_broadness' , \Drupal::request()->query->all()) && $searchbroadness == 'narrow') {
+      $form['search']['results']['#attributes']['data-as_sitesearch'] = \Drupal::config('cse_selector.settings')->get('cse_selector_narrow_search_query');
+    }
     return $form;
   }
   public function submitForm(array &$form, FormStateInterface $form_state){}

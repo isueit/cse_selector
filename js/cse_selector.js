@@ -5,7 +5,7 @@ function cse_selector_js_request() {
   gcse.type = 'text/javascript';
   gcse.async = true;
   gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
-  var s = document.getElementsByClassName('cse_script')[0];
+  var s = document.getElementsByClassName('gcse-searchresults-only')[0];
   s.parentNode.insertBefore(gcse, s);
 }
 //This function is also called when there is an ajax on_change event for the search wideness radios

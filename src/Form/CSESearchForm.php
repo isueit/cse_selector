@@ -1,14 +1,14 @@
 <?php
 /*
  * @file
- * Contains \Drupal\cse_selector\Form\SearchForm
+ * Contains \Drupal\cse_selector\Form\CSESearchForm
  */
 namespace Drupal\cse_selector\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 
-class SearchForm extends FormBase {
+class CSESearchForm extends FormBase {
   public function getFormId() {
     return 'search_bar';
   }
