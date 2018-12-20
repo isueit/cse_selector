@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * @file
  * Contains \Drupal\cse_selector\Form\CSESearchForm
  */
@@ -10,7 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 
 class CSESearchForm extends FormBase {
   public function getFormId() {
-    return 'search_bar';
+    return 'cse_search_form';
   }
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
