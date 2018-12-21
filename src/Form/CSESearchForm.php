@@ -9,9 +9,15 @@ use Drupal\Core\Form\FormStateInterface;
 
 
 class CSESearchForm extends FormBase {
+  /**
+   * {@inheritdoc}
+   */
   public function getFormId() {
     return 'cse_search_form';
   }
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('cse_selector.settings');
     $cse_search_type = $config->get('cse_selector_default_search_type');

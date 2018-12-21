@@ -20,12 +20,3 @@
      default:
    }
 }
-function cse_selector_theme($existing, $type, $theme, $path) {
-  return $render_array = [
-    '#theme' => [
-      'forum__' . $tid,
-      'forum',
-    ],
-    '#forum' => $forum,
-  ];
-}

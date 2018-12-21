@@ -1,5 +1,5 @@
 <?php
-/*
+/**
 * @file
 */
 namespace Drupal\cse_selector\Plugin\Block;
@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 
-/*
+/**
  * Provides a "CSESearch" Block.
  *
  * @Block(
@@ -19,7 +19,7 @@ use Drupal\Core\Access\AccessResult;
  * )
  */
 class CSESearchBlock extends BlockBase {
-  /*
+  /**
    * {@inheritdoc}
    */
   public function build() {
@@ -29,22 +29,17 @@ class CSESearchBlock extends BlockBase {
     $form['form_token']['#access'] = FALSE;
     return $form;
   }
-  public function getPluginId() {
-    return $this->'cse_search_block';
-  }
-  /*
+  /**
    * {@inheritdoc}
    */
-  protected function blockAccess(AccountInterface $account) {
-    return $account->hasPermission('access content');
+  protected function blockAccess(AccountInterface $account, $return_as_object = FALSE) {
+    return AccessResult::allowedIfHasPermission($account, 'access content');
   }
-  /*
+  /**
    * {@inheritdoc}
    */
   public function getCacheMaxAge() {
     return 0;
   }
-  public function blockForm() {}
-  public function blockSubmit() {}
   public function defaultConfiguration() {}
 }

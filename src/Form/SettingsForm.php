@@ -9,8 +9,8 @@ use Drupal\Core\Form\FormStateInterface;
  * Class SettingsForm
  */
 class SettingsForm extends ConfigFormBase {
-  /*
-   * {@interitdoc}
+  /**
+   * {@inheritdoc}
    */
    protected function getEditableConfigNames() {
      return [
@@ -18,15 +18,15 @@ class SettingsForm extends ConfigFormBase {
      ];
    }
 
-   /*
-    * {@interitdoc}
+   /**
+    * {@inheritdoc}
     */
     public function getFormID() {
       return 'settings_form';
     }
 
-    /*
-     * {@interitdoc}
+    /**
+     * {@inheritdoc}
      */
      public function buildForm(array $form, FormStateInterface $form_state) {
        $config = $this->config('cse_selector.settings');
@@ -81,15 +81,15 @@ class SettingsForm extends ConfigFormBase {
       return parent::buildForm($form, $form_state);
     }
 
-    /*
-     * {@interitdoc}
+    /**
+     * {@inheritdoc}
      */
     public function validateForm(array &$form, FormStateInterface $form_state) {
       parent::validateForm($form, $form_state);
     }
 
-    /*
-     * {@interitdoc}
+    /**
+     * {@inheritdoc
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
       parent::submitForm($form, $form_state);
