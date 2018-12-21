@@ -26,10 +26,10 @@ class CSESearchForm extends FormBase {
     $get_results = \Drupal::request()->query->all();
 
     $form['#method'] = 'get';
-    $form['q'] = array(
-      '#type' => 'hidden',
-      '#default_value' => $cse_results_page_name,
-    );
+    #TODO get this to use the config value for results page
+    $url = \Drupal\Core\Url::fromRoute('cse_selector.cse_selector_search_results');
+    $form['#action'] = $url->toString();
+
     $form['search'] = array(
       '#type' => 'fieldset',
       '#title' => t('')

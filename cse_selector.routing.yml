@@ -8,6 +8,7 @@ cse_selector.cse_admin_settings_form:
     _permission: 'administer cse selector'
   options:
     _admin_route: TRUE
+#TODO create dynamic route to take from results page
 cse_selector.cse_selector_search_results:
   path: '/search-results'
   defaults:
