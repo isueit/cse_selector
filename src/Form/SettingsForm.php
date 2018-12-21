@@ -4,6 +4,9 @@ namespace Drupal\cse_selector\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\cse_selector\Routing\RouteSubscriber;
+use Symfony\Component\Routing\RouteCollection;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /*
  * Class SettingsForm
@@ -103,5 +106,7 @@ class SettingsForm extends ConfigFormBase {
         ->set('cse_selector_url_text', $form_state->getValue('cse_selector_url_text'))
         ->set('cse_selector_results_page_name', $form_state->getValue('cse_selector_results_page_name'))
         ->save();
+        $results_route = \Drupal::routeMatch()->getRawParameter("cse_selector.cse_selector_search_results");
+        RouteSubscriber::alterRoutes($results_route);
     }
 }
