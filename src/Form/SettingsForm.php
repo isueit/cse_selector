@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\cse_selector\Routing\RouteSubscriber;
 use Symfony\Component\Routing\RouteCollection;
 use Drupal\Core\Routing\RouteProvider;
+use Drupal\Core\Routing\RouteBuilderInterface;
 
 /*
  * Class SettingsForm
@@ -106,11 +107,6 @@ class SettingsForm extends ConfigFormBase {
         ->set('cse_selector_url_text', $form_state->getValue('cse_selector_url_text'))
         ->set('cse_selector_results_page_name', $form_state->getValue('cse_selector_results_page_name'))
         ->save();
-
-      $route = RouteProvider::getRoutesByNames('cse_selector.cse_selector_search_results');
-      RouteSubscriber::AlterRoutes($route);
-    }
-    public function preLoadRoutes() {
-      RouteProvider::preLoadRoutes(['cse_selector_search_results']);
+      RouteBuilderInterface::rebuild();
     }
 }
