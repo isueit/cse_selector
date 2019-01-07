@@ -41,5 +41,4 @@ class CSESearchBlock extends BlockBase {
   public function getCacheMaxAge() {
     return 0;
   }
-  public function defaultConfiguration() {}
 }

@@ -5,9 +5,7 @@ namespace Drupal\cse_selector\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\cse_selector\Routing\RouteSubscriber;
-use Symfony\Component\Routing\RouteCollection;
-use Drupal\Core\Routing\RouteProvider;
-use Drupal\Core\Routing\RouteBuilderInterface;
+use Drupal\Core\EventSubscriber\RouterRebuildSubscriber;
 
 /*
  * Class SettingsForm
@@ -97,7 +95,6 @@ class SettingsForm extends ConfigFormBase {
      */
     public function submitForm(array &$form, FormStateInterface $form_state) {
       parent::submitForm($form, $form_state);
-
       $this->config('cse_selector.settings')
         ->set('cse_selector_id_key', $form_state->getValue('cse_selector_id_key'))
         ->set('cse_selector_narrow_search_text', $form_state->getValue('cse_selector_narrow_search_text'))
@@ -107,6 +104,6 @@ class SettingsForm extends ConfigFormBase {
         ->set('cse_selector_url_text', $form_state->getValue('cse_selector_url_text'))
         ->set('cse_selector_results_page_name', $form_state->getValue('cse_selector_results_page_name'))
         ->save();
-      RouteBuilderInterface::rebuild();
-    }
+    \Drupal::service('router.builder')->rebuild();
+  }
 }
