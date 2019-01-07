@@ -37,7 +37,9 @@ class CSESearchForm extends FormBase {
       '#type' => 'container',
       '#attributes' => array(
         'class' => array(
-          'container-inline'
+          'container-inline',
+          'isu-search',
+          'isu-search_collapse'
         )
       )
     );
@@ -52,7 +54,12 @@ class CSESearchForm extends FormBase {
     }
     $form['search'][$cse_url_text] = array(
       '#type' => 'textfield',
-      '#attributes' => array('placeholder' => t('Search test')),
+      '#attributes' => [
+        'placeholder' => t('Search'),
+        'class' => ['form-control',
+        'isu-form-control_search',
+        'isu-search__search-field']
+      ],
     );
     if (array_key_exists($cse_url_text, $get_results)) {
           $form['search'][$cse_url_text]['#default_value'] = $get_results[$cse_url_text];
@@ -61,6 +68,11 @@ class CSESearchForm extends FormBase {
     }
     $form['search']['search_submit']  = array(
       '#type' => 'submit',
+      '#attributes' => [
+        '#class' => [
+          'form-submit',
+          'isu-search__search-btn'
+        ]],
     );
     return $form;
   }
