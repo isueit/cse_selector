@@ -36,12 +36,14 @@ class CSESearchForm extends FormBase {
     $form['search'] = array(
       '#type' => 'container',
       '#attributes' => array(
-        'class' => array(
-          'container-inline',
-          'isu-search',
-          'isu-search_collapse'
-        )
+        'class' => ['form-group', 'isu-form-type_search', 'js-form-item', 'form-item', 'js-form-type-search', 'form-item-keys', 'js-form-item-keys', 'form-no-label']
       )
+    );
+    $form['submit'] = array(
+      '#type' => 'container',
+      '#attributes' => array(
+        'class' => ['form-actions', 'js-form-wrapper', 'form-wrapper']
+      ),
     );
     $form['search']['search_broadness'] = array(
       '#type' => 'hidden',
@@ -53,7 +55,8 @@ class CSESearchForm extends FormBase {
       $form['search']['search_broadness']['#default_value'] = $cse_search_type;
     }
     $form['search'][$cse_url_text] = array(
-      '#type' => 'textfield',
+      '#type' => 'search',
+      '#theme_wrappers' => [],
       '#attributes' => [
         'placeholder' => t('Search'),
         'class' => ['form-control',
@@ -66,14 +69,11 @@ class CSESearchForm extends FormBase {
     } else {
       $form['search'][$cse_url_text]['#default_value'] = '';
     }
-    $form['search']['search_submit']  = array(
-      '#type' => 'submit',
-      '#attributes' => [
-        '#class' => [
-          'form-submit',
-          'isu-search__search-btn'
-        ]],
-    );
+    $form['submit']['search_submit'] =
+    [
+      '#type' => 'inline_template',
+      '#template' => '<button class="isu-search__search-btn button js-form-submit form-submit btn" data-drupal-selector="edit-submit" type="submit" id="search_edit-submit" value="Search"><span class="fa fa-search" aria-hidden="true"><span><span class="isu-search__search-btn-text">Submit Search<span></button>',
+    ];
     return $form;
   }
   public function submitForm(array &$form, FormStateInterface $form_state){}
