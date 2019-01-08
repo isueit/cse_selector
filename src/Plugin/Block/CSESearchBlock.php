@@ -23,17 +23,24 @@ class CSESearchBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $form['search-block-form'] = [
+    $form['search'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'id' => 'isu-search_collapse',
+        'class' => 'isu-search_collapse',
+      ]
+    ];
+    $form['search']['search-block-form'] = [
       '#type' => 'container',
       '#attributes' => [
         'id' => 'block-iastate-theme-search',
-        'class' => ['search-block-form','isu-search', 'isu-search_collapse']
+        'class' => ['search-block-form','isu-search']
       ],
     ];
-    $form['search-block-form']['search'] = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\CSESearchForm');
-    $form['search-block-form']['search']['form_id']['#access'] = FALSE;
-    $form['search-block-form']['search']['form_build_id']['#access'] = FALSE;
-    $form['search-block-form']['search']['form_token']['#access'] = FALSE;
+    $form['search']['search-block-form']['search'] = \Drupal::formBuilder()->getForm('Drupal\cse_selector\Form\CSESearchForm');
+    $form['search']['search-block-form']['search']['form_id']['#access'] = FALSE;
+    $form['search']['search-block-form']['search']['form_build_id']['#access'] = FALSE;
+    $form['search']['search-block-form']['search']['form_token']['#access'] = FALSE;
     $cse_url_text = \Drupal::config('cse_selector.settings')->get('cse_selector_url_text');
     return $form;
   }
