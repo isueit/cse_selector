@@ -37,6 +37,9 @@ class ResultsForm extends FormBase {
     $form['search']['search_submit']  = array(
       '#type' => 'submit',
       '#value' => t('Search'),
+      '#attributes' => [
+        'class' => [] //TODO get a dedicated class added to make this hidden
+        ]
     );
     //Loads external JS file to connect with google api
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
