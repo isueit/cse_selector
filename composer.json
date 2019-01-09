@@ -1,0 +1,5 @@
+{
+  "name": "isueit/cse_selector",
+  "type": "drupal-custom-module",
+  "description": "Module to select width of search result of a Google CSE search"
+}
