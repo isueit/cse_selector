@@ -4,7 +4,7 @@ This Drupal 8 module provides a search-bar and a search results page that implem
 
 ### Search bar
 The module creates a block that uses the responsive classes found in the Extension theme.
-The search bar consists of a [Form](src/Form/CSESearchForm.php) put into a [Plugin Block](src/Plugin/Block/CSESearchBlock) that currently needs to be manually added to the site.
+The search bar consists of a [Form](src/Form/CSESearchForm.php) put into a [Plugin Block](src/Plugin/Block/CSESearchBlock.php) that currently needs to be manually added to the site.
 
 ### Results Page
 The module automatically generates a page that consists of a [Form](src/Form/ResultsForm.php) put into a [Controller](src/Plugin/Block/CSESearchBlock.php) at the url defined by the [Routing File](cse_selector.routing.yml).
