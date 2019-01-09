@@ -18,6 +18,7 @@ class ResultsController extends ControllerBase {
     $form['form_id']['#access'] = FALSE;
     $form['form_build_id']['#access'] = FALSE;
     $form['form_token']['#access'] = FALSE;
+    $form['search']['search_submit']['#name'] = FALSE;
     return $form;
   }
 }

@@ -17,6 +17,9 @@ class ResultsForm extends FormBase {
     $cse_url_text = $config->get('cse_selector_url_text');
     $cse_results_page_name = $config->get('cse_selector_results_page_name');
     $get_results = \Drupal::request()->query->all();
+    if (array_key_exists('search_broadness' , $get_results)) {
+      $searchbroadness = preg_replace("/[^a-z]+/","",$get_results['search_broadness']);
+    }
 
     $form['#method'] = 'get';
     $form['search']['search_broadness'] = array(
@@ -26,7 +29,7 @@ class ResultsForm extends FormBase {
         'wide' => t($cse_wide_search_text),
       ),
       '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
-      '#default_value' => (array_key_exists('search_broadness', $get_results) ? $get_results['search_broadness'] : $cse_search_type),
+      '#default_value' => (array_key_exists('search_broadness', $get_results) ? $searchbroadness : $cse_search_type),
     );
     if (array_key_exists($cse_url_text, $get_results)) {
       $form['search'][$cse_url_text] = array(
@@ -50,19 +53,19 @@ class ResultsForm extends FormBase {
       '#markup' => $block,
       '#allowed_tags' => ['script'],
     );
-    $searchbroadness = preg_replace("/[^a-z]+/","",\Drupal::request()->query->get('search_broadness'));
+
     $form['search']['results'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
         'class' => ['gcse-searchresults-only'],
         'data-resultsUrl' => ["https://www.extension.iastate.edu" . base_path()],
-        'data-queryParameterName' => [\Drupal::config('cse_selector.settings')->get('cse_selector_url_text')],
+        'data-queryParameterName' => [$cse_url_text],
       ],
       '#value' => '',
     ];
-    if (array_key_exists('search_broadness' , \Drupal::request()->query->all()) && $searchbroadness == 'narrow') {
-      $form['search']['results']['#attributes']['data-as_sitesearch'] = \Drupal::config('cse_selector.settings')->get('cse_selector_narrow_search_query');
+    if (array_key_exists('search_broadness' , $get_results) && $searchbroadness == 'narrow') {
+      $form['search']['results']['#attributes']['data-as_sitesearch'] = $cse_narrow_search_query;
     }
     return $form;
   }
