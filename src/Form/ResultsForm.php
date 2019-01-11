@@ -47,7 +47,7 @@ class ResultsForm extends FormBase {
     //Loads external JS file to connect with google api
     $form['#attached']['library'][] = 'cse_selector/cse_selector_results';
     $block = '';
-    $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";</script>';
+    $block .= '<script class="cse_script">var cx="' . $cse_id_key . '";document.getElementById("edit-search-submit").style.display="none";</script>';
     $form['search']['script'] = array(
       '#type' => 'item',
       '#markup' => $block,
