@@ -38,6 +38,8 @@ function cse_selector_help($path, $arg) {
 function cse_selector_search_form($form, &$form_state) {
   $form['#id'] = "search-block-form";
   $form['#method'] = 'get';
+  $form['#token'] = FALSE;
+  $form['#after_build'] = array('cse_selector_unset_default_form_elements');
   $form['q'] = array(
     '#type' => 'hidden',
     '#default_value' => variable_get('cse_selector_results_page_name'),
@@ -101,6 +103,8 @@ function cse_selector_search_form($form, &$form_state) {
  */
 function cse_selector_results_form($form, &$form_state) {
   $form['#method'] = 'get';
+  $form['#token'] = FALSE;
+  $form['#after_build'] = array('cse_selector_unset_default_form_elements');
   $form['search']['search_broadness'] = array(
     '#type' => 'radios',
     '#options' => array(
@@ -146,6 +150,10 @@ function cse_selector_results_form($form, &$form_state) {
   $block .= '></div>';
   $form['search']['google_results'] = array('#markup' => $block);
    return $form;
+}
+function cse_selector_unset_default_form_elements($form) {
+  unset($form['#build_id'], $form['form_build_id'], $form['form_id']);
+  return $form;
 }
 //Implements hook_block_info for selector search and results
 function cse_selector_block_info() {
