@@ -127,6 +127,7 @@ function cse_selector_results_form($form, &$form_state) {
   $form['search']['search_submit']  = array(
     '#type' => 'submit',
     '#value' => t('Search'),
+    '#attributes' => array('id' => 'search_submit_hidden')
   );
   //Loads external JS file to connect with google api
   $form['#attached']['js'][] = drupal_get_path('module', 'cse_selector') . '/cse_selector.js';
@@ -140,7 +141,7 @@ function cse_selector_results_form($form, &$form_state) {
   $block = '';
   $block .= '<script class="cse_script">
     var cx="' . variable_get('cse_selector_id_key') . '";
-  document.onload = cse_selector_js_request(); </script>';
+  document.onload = cse_selector_js_request();document.getElementById("search_submit_hidden").style.display="none";</script>';
   $block .= '<div class="gcse-searchresults-only"';
   if (array_key_exists('search_broadness', drupal_get_query_parameters()) && drupal_get_query_parameters()['search_broadness'] == 'narrow') {
     $block .= ' data-as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
