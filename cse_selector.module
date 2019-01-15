@@ -36,6 +36,7 @@ function cse_selector_help($path, $arg) {
  */
 
 function cse_selector_search_form($form, &$form_state) {
+  $form['#id'] = "search-block-form";
   $form['#method'] = 'get';
   $form['q'] = array(
     '#type' => 'hidden',
@@ -49,7 +50,8 @@ function cse_selector_search_form($form, &$form_state) {
     '#type' => 'container',
     '#attributes' => array(
       'class' => array(
-        'container-inline'
+        'container-inline',
+        'form-item-search-block-form'
       )
     )
   );
@@ -62,17 +64,33 @@ function cse_selector_search_form($form, &$form_state) {
   } else {
     $form['search']['search_broadness']['#default_value'] = variable_get('cse_selector_default_search_type');
   }
+  $form['search'][variable_get('cse_selector_url_text')] = [
+    '#attributes' => [
+      'class' => ['form-item-search-block-form'],
+    ]
+  ];
   $form['search'][variable_get('cse_selector_url_text')] = array(
     '#type' => 'textfield',
-    '#attributes' => array('placeholder' => t('Search')),
+    '#attributes' => array(
+      'placeholder' => t('Search'),),
   );
   if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
         $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = drupal_get_query_parameters()[variable_get('cse_selector_url_text')];
   } else {
     $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = '';
   }
-  $form['search']['search_submit']  = array(
+  $form['search']['search_submit'] = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'id' => 'edit-actions',
+      'class' => array(
+        'form-actions',
+      ),
+    ),
+  );
+  $form['search']['search_submit']['search_submit']  = array(
     '#type' => 'submit',
+    '#value' => '  ',
   );
   return $form;
 }
