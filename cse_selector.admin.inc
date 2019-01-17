@@ -55,5 +55,10 @@
      '#default_value' => variable_get('cse_selector_results_page_name'),
      '#description' => t('This will be the name of the page that the results will be displayed on.')
    );
-   return system_settings_form($form);
+   $page = system_settings_form($form);
+   $page['#submit'][] = 'cse_selector_settings_submit';
+   return $page;
+ }
+ function cse_selector_settings_submit($form, &$form_state) {
+   menu_rebuild();
  }

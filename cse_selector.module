@@ -12,6 +12,13 @@ function cse_selector_menu() {
     'file' => 'cse_selector.admin.inc',
     'access arguments' => array('administer'),
   );
+  $items[variable_get('cse_selector_results_page_name')] = array(
+    'title' => 'Search Results',
+    'description' => 'Extension Search Results Page',
+    'page callback' => 'cse_selector_results_page',
+    'file' => 'cse_selector.module',
+    'access arguments' => array('access content'),
+  );
   return $items;
 }
 /*
@@ -156,14 +163,15 @@ function cse_selector_unset_default_form_elements($form) {
   unset($form['#build_id'], $form['form_build_id'], $form['form_id']);
   return $form;
 }
+function cse_selector_results_page() {
+  drupal_page_is_cacheable(FALSE);
+  $page['content'] = drupal_get_form('cse_selector_results_form');
+  return $page;
+}
 //Implements hook_block_info for selector search and results
 function cse_selector_block_info() {
   $blocks['search'] = array(
     'info' => t('Google Custom Search Bar'),
-    'cache' => DRUPAL_NO_CACHE,
-  );
-  $blocks['results'] = array(
-    'info' => t('Google Custom Search Results'),
     'cache' => DRUPAL_NO_CACHE,
   );
 
@@ -171,16 +179,8 @@ function cse_selector_block_info() {
 }
 // Implements hook_block_view for selector search and results
 function cse_selector_block_view($delta) {
-  switch ($delta) {
-    case 'search':
-    //Calls for search form
-      $block['content'] = drupal_get_form('cse_selector_search_form');
-      return $block;
-      break;
-    case 'results':
-    //Outputs search results
-      $block['content'] = drupal_get_form('cse_selector_results_form');
-      return $block;
-      break;
+  if ($delta == 'search') {
+    $block['content'] = drupal_get_form('cse_selector_search_form');
+    return $block;
   }
 }

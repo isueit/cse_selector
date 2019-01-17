@@ -6,7 +6,7 @@ function cse_selector_install() {
   variable_set('cse_selector_id_key', '014153082229948236703:4fobzs0gqdo');
   variable_set('cse_selector_narrow_search_text', 'Search ' . variable_get('site_name')); //The Sitename is added
   variable_set('cse_selector_narrow_search_query', 'https://www.extension.iastate.edu' . base_path()); //The base path of the site is added
-  variable_set('cse_selector_wide_search_text', 'Search All ISU Extension and Outreach');
+  variable_set('cse_selector_wide_search_text', 'Search All of ISU Extension and Outreach');
   variable_set('cse_selector_default_search_type', 'narrow');
   variable_set('cse_selector_url_text', 'as_q');
   variable_set('cse_selector_results_page_name', 'search-results');
