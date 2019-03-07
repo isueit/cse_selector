@@ -99,6 +99,7 @@ function cse_selector_search_form($form, &$form_state) {
   );
   $form['search']['search_submit']['search_submit']  = array(
     '#type' => 'submit',
+    '#name' => '',
     '#value' => '  ',
   );
   return $form;
@@ -118,7 +119,7 @@ function cse_selector_results_form($form, &$form_state) {
       'narrow' => t(variable_get('cse_selector_narrow_search_text')),
       'wide' => t(variable_get('cse_selector_wide_search_text'))
     ),
-    '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
+    '#attributes' => array('onchange' => 'add_param();form.submit("cse_selector_results_form")'),
   );
   if (array_key_exists('search_broadness', drupal_get_query_parameters())) {
     $form['search']['search_broadness']['#default_value'] = drupal_get_query_parameters()['search_broadness'];
