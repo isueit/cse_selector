@@ -28,7 +28,10 @@ class ResultsForm extends FormBase {
         'narrow' => t($cse_narrow_search_text),
         'wide' => t($cse_wide_search_text),
       ),
-      '#attributes' => array('onchange' => 'form.submit("cse_selector_results_form")'),
+      '#attributes' => array(
+        'onchange' => 'add_param();form.submit("cse_selector_results_form");',
+      ),
+      '#executes_submit_callback' => TRUE,
       '#default_value' => (array_key_exists('search_broadness', $get_results) ? $searchbroadness : $cse_search_type),
     );
     if (array_key_exists($cse_url_text, $get_results)) {
@@ -66,6 +69,6 @@ class ResultsForm extends FormBase {
     }
     return $form;
   }
-  public function submitForm(array &$form, FormStateInterface $form_state){}
+  public function submitForm(array &$form, FormStateInterface $form_state) {}
   public function validateForm(array &$form, FormStateInterface $form_state){}
 }
