@@ -4,7 +4,7 @@
  * Implements hook_menu()
  */
 function cse_selector_menu() {
-  $items['admin/config/content/cse_selector'] = array(
+  $items['admin/config/search/cse_selector'] = array(
     'title' => 'Google Custom Search',
     'description' => 'Google Custom Search',
     'page callback' => 'drupal_get_form',
