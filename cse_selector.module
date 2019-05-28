@@ -81,7 +81,10 @@ function cse_selector_search_form($form, &$form_state) {
   $form['search'][variable_get('cse_selector_url_text')] = array(
     '#type' => 'textfield',
     '#attributes' => array(
-      'placeholder' => t('Search'),),
+      'placeholder' => t('Search'),
+      'title' => 'search box',
+    ),
+
   );
   if (array_key_exists(variable_get('cse_selector_url_text'), drupal_get_query_parameters())) {
         $form['search'][variable_get('cse_selector_url_text')]['#default_value'] = drupal_get_query_parameters()[variable_get('cse_selector_url_text')];
@@ -98,9 +101,12 @@ function cse_selector_search_form($form, &$form_state) {
     ),
   );
   $form['search']['search_submit']['search_submit']  = array(
-    '#type' => 'submit',
+    '#type' => 'button',
+    '#button_type' => 'submit',
+    '#executes_submit_callback' => TRUE,
     '#name' => '',
-    '#value' => '  ',
+    '#value' => (preg_match("/" . variable_get('cse_selector_results_page_name') . "/", current_path()) ? 'resubmit search' : 'submit search'),
+    '#title' => 'search',
   );
   return $form;
 }
