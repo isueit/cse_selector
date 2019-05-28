@@ -61,7 +61,8 @@ class CSESearchForm extends FormBase {
         'placeholder' => t('Search'),
         'class' => ['form-control',
         'isu-form-control_search',
-        'isu-search__search-field']
+        'isu-search__search-field'],
+        'title' => 'search box',
       ],
     );
     if (array_key_exists($cse_url_text, $get_results)) {
@@ -72,8 +73,10 @@ class CSESearchForm extends FormBase {
     $form['submit']['search_submit'] =
     [
       '#type' => 'inline_template',
-      '#template' => '<button class="isu-search__search-btn button js-form-submit form-submit btn" data-drupal-selector="edit-submit" type="submit" id="search_edit-submit" value="Search"><span class="fa fa-search" aria-hidden="true"><span><span class="isu-search__search-btn-text">Submit Search<span></button>',
+      '#template' => '<button class="isu-search__search-btn button js-form-submit form-submit btn" data-drupal-selector="edit-submit" type="submit" id="search_edit-submit" value="' . (preg_match("/" . $cse_results_page_name . "/", \Drupal::service('path.current')->getPath()) != FALSE ? 'resubmit search' : 'submit search') . '"><span class="fa fa-search" aria-hidden="true"><span><span class="isu-search__search-btn-text">Submit Search<span></button>',
     ];
+    debug($cse_results_page_name);
+    debug(\Drupal::service('path.current')->getPath());
     return $form;
   }
   public function submitForm(array &$form, FormStateInterface $form_state){}
