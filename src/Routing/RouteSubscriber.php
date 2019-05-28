@@ -12,7 +12,6 @@ class RouteSubscriber extends RouteSubscriberBase {
   public static function getSubscribedEvents() {
     $events[RoutingEvents::ALTER] = 'onAlterRoutes';
     return $events;
-    debug('getting Subscribed events');
   }
   protected function alterRoutes(RouteCollection $collection) {
     if ($route = $collection->get('cse_selector.cse_selector_search_results')) {
