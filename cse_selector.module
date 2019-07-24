@@ -153,9 +153,10 @@ function cse_selector_results_form($form, &$form_state) {
   );
 
   $block = '';
-  $block .= '<script class="cse_script">
+  $script = '<script class="cse_script">
     var cx="' . variable_get('cse_selector_id_key') . '";
   document.onload = cse_selector_js_request();document.getElementById("search_submit_hidden").style.display="none";</script>';
+  $form['search']['results_script'] = array('#markup' => $script); #NEW
   $block .= '<div class="gcse-searchresults-only"';
   if (array_key_exists('search_broadness', drupal_get_query_parameters()) && drupal_get_query_parameters()['search_broadness'] == 'narrow') {
     $block .= ' data-as_sitesearch="' . variable_get('cse_selector_narrow_search_query') . '"';
@@ -164,6 +165,19 @@ function cse_selector_results_form($form, &$form_state) {
   $block .= ' data-queryParameterName="' . variable_get('cse_selector_url_text') . '"';
   $block .= '></div>';
   $form['search']['google_results'] = array('#markup' => $block);
+  // $attributes = array (
+  //   'class' => array('gcse-searchresults-only'),
+  //   'data-resultsUrl' => 'https://www.extension.iastate.edu' . base_path() . variable_get('cse_selector_results_page_name'),
+  //   'data-queryParameterName' => variable_get('cse_selector_url_text'),
+  // );
+  // if (array_key_exists('search_broadness', drupal_get_query_parameters()) && drupal_get_query_parameters()['search_broadness'] == 'narrow') {
+  //   $attributes['data-as_sitesearch'] = variable_get('cse_selector_narrow_search_query');
+  // }
+  // $form['search'][NULL] = array(
+  //  '#type' => 'container',
+  //  '#attributes' => $attributes,
+  //  '#id' => null,
+  // );
    return $form;
 }
 function cse_selector_unset_default_form_elements($form) {
